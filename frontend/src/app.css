@@ -1,0 +1,44 @@
+.leaflet-container {
+  height: 100vh;
+  width: 100vw;
+}
+
+.card {
+  width: 250px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.card label {
+  color: rgb(7, 187, 165);
+  font-size: 13px;
+  border-bottom: 1px solid gray;
+}
+
+.card p {
+  margin: 0;
+}
+
+.desc {
+  font-size: 14px;
+}
+
+.star {
+  color: yellow;
+}
+
+.star path {
+  stroke: black;
+  stroke-width: 10;
+}
+
+.username {
+    font-size: 14px;
+}
+
+.date {
+    font-size: 12px;
+}
