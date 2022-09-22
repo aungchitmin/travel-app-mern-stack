@@ -16,9 +16,10 @@ import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faLocationDot, faStar } from "@fortawesome/free-solid-svg-icons";
 
 import axios from "axios";
+import { format } from "timeago.js";
 //import { Star } from "@material-ui/icons";
 
 const App = () => {
@@ -69,9 +70,31 @@ const App = () => {
   //   return null
   // }
 
+
+  const svg = `<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="location-dot" class="svg-inline--fa fa-location-dot locationdot" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 256c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64z"></path></svg>`
+
+  
+
+  function changeiconColor(user) {
+    const color = user === currentUser ? "#4838cc" : "ff0000"
+    const myicon = L.divIcon({
+      className: "my-custom-pin",
+      labelAnchor: [6, 40],
+      popupAnchor: [0, -5],
+      shadowSize: [41, 41],
+      iconSize: [30, 42],
+      iconAnchor: [15, 42],
+      html: `<div style='background-color:${color};' class='marker-pin'></div>
+      ${svg}
+      `,
+    });
+    return myicon
+  }
+
   const position = [16.9753, 96.0785];
 
   const [pins, setPins] = useState([]);
+  const currentUser = "john";
 
   useEffect(() => {
     const getPins = async () => {
@@ -89,7 +112,7 @@ const App = () => {
   return (
     <MapContainer
       center={position}
-      zoom={10}
+      zoom={6}
       scrollWheelZoom={false}
       zoomControl={false}
     >
@@ -98,22 +121,22 @@ const App = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {pins.map((p) => (
-        <Marker position={[p.lat, p.lng]}>
-          <Popup offset={[0, -33]}>
+        <Marker position={[p.lat, p.long]} icon={changeiconColor(p.username)} key={p._id}>
+          <Popup offset={[0, -25]}>
             <div className="card">
               <label>Place</label>
-              <h4>London City</h4>
+              <h4>{p.title}</h4>
               <label>Review</label>
-              <p className="desc">Beautiful Place</p>
+              <p className="desc">{p.desc}</p>
               <label>Rating</label>
               <div className="stars">
                 <FontAwesomeIcon icon={faStar} className="star" />
               </div>
               <label>Information</label>
               <span className="username">
-                Created by <b>ACM</b>
+                Created by <b>{p.username}</b>
               </span>
-              <span className="date">1 hour ago</span>
+              <span className="date">{format(p.createdAt)}</span>
             </div>
           </Popup>
         </Marker>
