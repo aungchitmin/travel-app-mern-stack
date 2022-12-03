@@ -25,8 +25,11 @@ mongoose
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/api/pins", pinRoute);
-app.use("/api/users", userRoute);
+//app.use("/api/pins", pinRoute);
+//app.use("/api/users", userRoute);
+app.use('/api/pins', require(path.join(__dirname, 'api', 'pins', pinRoute)));
+app.use('/api/users', require(path.join(__dirname, 'api', 'users', userRoute)));
+
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend', 'build')));
